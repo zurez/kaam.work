@@ -9,9 +9,10 @@ class App extends React.Component {
     this.state = {
       query:"",
       results:[],
-      showwOnlyStocked:false
+      validResults:[],
+      showOnlyStocked:false
     }
-    
+    this.updateSearch = this.updateSearch.bind(this)
   }
 
   componentDidMount(){
@@ -20,7 +21,7 @@ class App extends React.Component {
   async getResults(){
     try {
       const response = await axios.get('http://api.myjson.com/bins/109m7i');
-      this.setState({results:response.data});
+      this.setState({results:response.data,validResults:response.data});
     } catch (error) {
       
     }
@@ -29,17 +30,32 @@ class App extends React.Component {
 
   updateSearch(query){
 
+    const filtered = this.state.results.filter( e => {
+      if(e.name.toLowerCase().includes(query.toLowerCase())){
+        return true
+      }
+    })
+    this.setState({validResults: filtered})
   }
 
   render(){
     return(
-      <div style={{display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"
+      <div style={{display:"flex",alignItems:"center",justifyContent:"left",flexDirection:"column",
+      textAlign:"left"
       }}>
         <div>
         <Search updateSearch = {this.updateSearch} value = {this.state.query}/>
         </div>
         <div>
-        <Items data = {this.state.results} showwOnlyStocked= {this.state.showwOnlyStocked}/>
+          <label>
+          <input type="checkbox" onChange={(e) => this.setState({showOnlyStocked:!this.state.showOnlyStocked})} 
+          checked={this.state.showOnlyStocked}/>
+            Only show products in stock   
+          </label>
+          
+        </div>
+        <div>
+        <Items data = {this.state.validResults} showOnlyStocked= {this.state.showOnlyStocked}/>
         </div>
         
       </div>
