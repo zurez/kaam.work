@@ -1,7 +1,8 @@
 # Shopping UI
 
 Done as part of challenge!
-
+As no Gdrive link was provided in the link so submitting Git repo
+https://github.com/zurez/kaam.work
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
